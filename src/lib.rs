@@ -13,28 +13,42 @@ impl<K: Ord, V> LeafNode<K, V> {
             entries: BTreeMap::new(),
         }
     }
+
+    fn len(&self) -> usize {
+        self.entries.len()
+    }
+
+    fn is_empty(&self) -> bool {
+        self.entries.is_empty()
+    }
+
+    fn insert(&mut self, key: K, value: V) -> Option<V> {
+        self.entries.insert(key, value)
+    }
+
+    fn get(&self, key: &K) -> Option<&V> {
+        self.entries.get(key)
+    }
 }
 
 #[derive(Debug)]
 pub struct BPlusTree<K, V> {
     root: LeafNode<K, V>,
-    branching_factor: usize,
 }
 
 impl<K: Ord, V> BPlusTree<K, V> {
     pub fn new(branching_factor: usize) -> Self {
         Self {
-            branching_factor,
             root: LeafNode::new(branching_factor),
         }
     }
 
     pub fn len(&self) -> usize {
-        self.root.entries.len()
+        self.root.len()
     }
 
     pub fn is_empty(&self) -> bool {
-        self.root.entries.is_empty()
+        self.root.is_empty()
     }
 
     pub fn branching_factor(&self) -> usize {
@@ -42,11 +56,11 @@ impl<K: Ord, V> BPlusTree<K, V> {
     }
 
     pub fn insert(&mut self, key: K, value: V) -> Option<V> {
-        self.root.entries.insert(key, value)
+        self.root.insert(key, value)
     }
 
-    pub fn get(&self, _key: &K) -> Option<&V> {
-        unimplemented!()
+    pub fn get(&self, key: &K) -> Option<&V> {
+        self.root.get(key)
     }
 
     pub fn remove(&mut self, _key: &K) -> Option<V> {

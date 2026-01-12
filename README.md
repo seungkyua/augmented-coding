@@ -39,3 +39,25 @@ prompt> /refactor (지금은 생략, 하려면 명령을 추가함... 예: 이 �
 
 prompt> @plan.md 에서 완료된 항목에 [x] 표시를 해줘
 ```
+
+4. plan.md 의 다음 항목 진행
+```
+prompt> /red @plan.md  의 next item 수행
+
+prompt> /green
+
+promt> /refactor 
+- Add branching_factor parameter to BPlusTree constructor
+- Create LeafNode structure to store entries
+- Implement minimal insert method
+- Add test for insert functionality
+```
+
+5. plan.md 의 다음 항목 진행
+```
+prompt> /red
+
+prompt> /green
+
+prompt> /refactor
+```
