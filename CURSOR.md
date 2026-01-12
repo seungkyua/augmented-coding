@@ -73,3 +73,49 @@ When approaching a new feature:
 Follow this process precisely, always prioritizing clean, well-tested code over quick implementation.
 
 Always write one test at a time, make it run, then improve structure. Always run all the tests (except long-running tests) each time.
+
+
+## Commands
+
+### Building
+
+```bash
+cargo build
+```
+
+### Running Tests
+
+```bash
+# Run all tests
+cargo test
+
+# Run a specific test
+cargo test empty_tree_has_len_zero
+
+# Run tests with output
+cargo test -- --nocapture
+```
+
+### Code Checks
+
+```bash
+# Run rustfmt to format code
+cargo fmt
+
+# Check code formatting without making changes
+cargo fmt -- --check
+
+# Run clippy for linting
+cargo clippy
+```
+
+## Architecture
+
+The project implements a B+ Tree data structure in Rust:
+
+- Uses a generic structure `BPlusTree<K, V>` that can store keys and values of any types
+- Currently the implementation is a wrapper around Rust's standard `BTreeMap`
+- The public API consists of common tree operations: `new()`, `insert()`, `get()`, `remove()`, `len()`, and `is_empty()`
+- Core operations (`insert`, `get`, `remove`) are marked as unimplemented and will be the primary focus for development
+
+The test suite is organized separately from the implementation in the `tests` directory, following Rust's convention for integration tests.
