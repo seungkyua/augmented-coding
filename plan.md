@@ -6,11 +6,18 @@ This document tracks the TDD implementation of the B+ Tree data structure. Tests
 
 ### Basic Structure Tests
 - [x] `empty_tree_has_len_zero` - An empty tree should have length 0
-- [ ] `empty_tree_is_empty` - An empty tree should report as empty
-- [ ] `new_tree_is_empty` - A newly created tree should be empty
+- [x] `create_tree_with_branching_factor` - Add branching_factor parameter to BPlusTree constructor
 
 ### Insertion Tests
-- [ ] `insert_single_item` - Insert one key-value pair and verify it's stored
+- [x] `insert_increases_length` - Insert one key-value pair and verify it's stored
+
+### Retrieval Tests
+- [ ] `get_returns_inserted_value`  - Implement get method for BPlusTree
+                                    - Add test for retrieving inserted values
+                                    - Implement get method to return values from the tree
+                                    - Verify correct handling of both existing and missing keys
+
+### Insertion Tests
 - [ ] `insert_multiple_items` - Insert multiple items and verify all are stored
 - [ ] `insert_duplicate_key` - Inserting the same key twice should update the value
 
