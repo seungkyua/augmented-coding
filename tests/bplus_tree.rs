@@ -46,3 +46,4 @@ fn get_returns_none_when_key_missing() {
     let missing = tree.get(&50);
     assert_eq!(missing, None);
 }
+

@@ -1,16 +1,31 @@
 use std::collections::BTreeMap;
 
+#[derive(Debug, Clone)]
+struct Entry<K, V> {
+    key: K,
+    value: V,
+}
+
 #[derive(Debug)]
 struct LeafNode<K, V> {
     branching_factor: usize,
     entries: BTreeMap<K, V>,
+    items: Vec<Option<Entry<K, V>>>,
+    count: usize,
 }
 
 impl<K: Ord, V> LeafNode<K, V> {
     fn new(branching_factor: usize) -> Self {
+        let mut items = Vec::with_capacity(branching_factor);
+        for _ in 0..branching_factor {
+            items.push(None);
+        }
+
         Self {
             branching_factor,
             entries: BTreeMap::new(),
+            items,
+            count: 0,
         }
     }
 

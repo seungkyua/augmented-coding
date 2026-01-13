@@ -12,13 +12,17 @@ This document tracks the TDD implementation of the B+ Tree data structure. Tests
 - [x] `insert_increases_length` - Insert one key-value pair and verify it's stored
 
 ### Retrieval Tests
-- [ ] `get_returns_inserted_value`  - Implement get method for BPlusTree
+- [x] `get_returns_inserted_value`  - Implement get method for BPlusTree
                                     - Add test for retrieving inserted values
                                     - Implement get method to return values from the tree
                                     - Verify correct handling of both existing and missing keys
 
 ### Insertion Tests
-- [ ] `insert_multiple_items` - Insert multiple items and verify all are stored
+- [x] `insert_multiple_items`   - Add array storage for LeafNode entries
+                                - Create Entry struct to store key-value pairs
+                                - Add items array to LeafNode with size equal to branching_factor
+                                - Add count field to track number of valid entries
+                                - Initialize array with None values in constructor
 - [ ] `insert_duplicate_key` - Inserting the same key twice should update the value
 
 ### Retrieval Tests
@@ -37,5 +41,5 @@ This document tracks the TDD implementation of the B+ Tree data structure. Tests
 
 ## Current Status
 
-Completed: `empty_tree_has_len_zero`
-Next: `empty_tree_is_empty`
+Completed: `insert_multiple_items`
+Next: `insert_duplicate_key`
