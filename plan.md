@@ -1,45 +1,133 @@
-# B+ Tree Test Plan
+# BPlusTree Implementation Plan
 
-This document tracks the TDD implementation of the B+ Tree data structure. Tests are marked as complete when they pass and the implementation is verified.
+## Overall Strategy: Remove First, Then Internal Nodes
 
-## Test List
+We'll implement remove operations in the current linked-list structure first, then add internal nodes later. This allows us to master rebalancing algorithms in a simpler context before adding tree complexity.
 
-### Basic Structure Tests
-- [x] `empty_tree_has_len_zero` - An empty tree should have length 0
-- [x] `create_tree_with_branching_factor` - Add branching_factor parameter to BPlusTree constructor
+## Phase 1: Structural Preparation for Remove
 
-### Insertion Tests
-- [x] `insert_increases_length` - Insert one key-value pair and verify it's stored
+### Step 1: Prepare for Remove Operations ✅
 
-### Retrieval Tests
-- [x] `get_returns_inserted_value`  - Implement get method for BPlusTree
-                                    - Add test for retrieving inserted values
-                                    - Implement get method to return values from the tree
-                                    - Verify correct handling of both existing and missing keys
+**Status**: Complete - Simplified approach
+**Why**: Remove operations need to access previous siblings for rebalancing
+**Decision**: Keep simple `Box<T>` ownership, find previous nodes by traversal when needed
+**Rationale**: Simpler ownership model, sufficient for remove operations
+**Changes**:
 
-### Insertion Tests
-- [x] `insert_multiple_items`   - Add array storage for LeafNode entries
-                                - Create Entry struct to store key-value pairs
-                                - Add items array to LeafNode with size equal to branching_factor
-                                - Add count field to track number of valid entries
-                                - Initialize array with None values in constructor
-- [ ] `insert_duplicate_key` - Inserting the same key twice should update the value
+- [x] Add `prev` field to LeafNode (for future use, currently unused)
+- [x] All existing tests still pass
+- [x] Ready to implement remove infrastructure
 
-### Retrieval Tests
-- [ ] `get_existing_key` - Retrieve a value using an existing key
-- [ ] `get_nonexistent_key` - Retrieve should return None for non-existent key
-- [ ] `get_after_insert` - Verify can retrieve after insertion
+### Step 2: Add Remove Infrastructure
 
-### Removal Tests
-- [ ] `remove_existing_key` - Remove an existing key-value pair
-- [ ] `remove_nonexistent_key` - Removing a non-existent key should return None
-- [ ] `remove_decreases_len` - Removing an item should decrease the length
+**Status**: Not Started
+**Changes**:
 
-### Edge Cases
-- [ ] `tree_with_one_item_has_len_one` - Tree with one item should have length 1
-- [ ] `remove_all_items_makes_tree_empty` - Removing all items should make tree empty
+- [ ] Add underflow detection methods to LeafNode
+- [ ] Add sibling access methods (get_prev_sibling, get_next_sibling)
+- [ ] Create RemovalResult enum
+- [ ] Add basic remove_key method to LeafNode (without rebalancing)
 
-## Current Status
+### Step 3: Add Rebalancing Operations
 
-Completed: `insert_multiple_items`
-Next: `insert_duplicate_key`
+**Status**: Not Started
+**Changes**:
+
+- [ ] Implement redistribute_from_next_sibling
+- [ ] Implement redistribute_from_prev_sibling
+- [ ] Implement merge_with_next_sibling
+- [ ] Implement merge_with_prev_sibling
+- [ ] Add helper methods for moving entries between nodes
+
+## Phase 2: Implement Remove with Rebalancing
+
+### Step 4: Basic Remove Implementation
+
+**Status**: Not Started
+**Changes**:
+
+- [ ] Implement BPlusTree::remove method
+- [ ] Handle simple cases (no underflow)
+- [ ] Add comprehensive tests for basic removal
+
+### Step 5: Add Underflow Handling
+
+**Status**: Not Started
+**Changes**:
+
+- [ ] Implement underflow detection in remove
+- [ ] Add redistribute logic (try siblings first)
+- [ ] Add merge logic (when redistribute fails)
+- [ ] Handle chain updates when nodes are removed
+- [ ] Add tests for all rebalancing scenarios
+
+### Step 6: Handle Edge Cases
+
+**Status**: Not Started
+**Changes**:
+
+- [ ] Handle removing from single-node tree
+- [ ] Handle removing last key from tree
+- [ ] Handle removing from first/last nodes in chain
+- [ ] Add comprehensive edge case tests
+
+## Phase 3: Prepare for Internal Nodes (Future)
+
+### Step 7: Extract Rebalancing Abstractions
+
+**Status**: Not Started
+**Changes**:
+
+- [ ] Create Rebalanceable trait
+- [ ] Extract rebalancing logic into reusable components
+- [ ] Create Node trait for polymorphism
+- [ ] Refactor BPlusTree to use trait objects
+
+### Step 8: Add Internal Node Structure
+
+**Status**: Not Started
+**Changes**:
+
+- [ ] Implement IndexNode struct
+- [ ] Implement Node trait for IndexNode
+- [ ] Update insertion to create internal nodes
+- [ ] Extend rebalancing to handle internal nodes
+
+## Testing Strategy
+
+### Existing Tests
+
+- All current tests must continue to pass after each step
+- Fuzz tests provide comprehensive validation
+
+### New Tests Needed
+
+- [ ] Doubly linked list traversal tests
+- [ ] Remove operation tests (basic cases)
+- [ ] Underflow and rebalancing tests
+- [ ] Edge case tests for remove
+- [ ] Performance tests for remove operations
+
+## Implementation Notes
+
+### Key Principles
+
+- Follow TDD: Write tests first, implement minimal code to pass
+- Tidy First: Separate structural changes from behavioral changes
+- Small steps: Each commit should leave all tests passing
+- Comprehensive validation: Use fuzz tests to catch edge cases
+
+### Risk Mitigation
+
+- Doubly linked list changes are structural - low risk
+- Remove implementation is high complexity - implement incrementally
+- Maintain existing API compatibility throughout
+- Use fuzz tests to validate against BTreeMap behavior
+
+## Current Focus
+
+**Next Action**: Implement doubly linked list structure (Step 1)
+
+- This is a pure structural change
+- Should not break any existing functionality
+- Enables efficient backward traversal needed for remove operations
